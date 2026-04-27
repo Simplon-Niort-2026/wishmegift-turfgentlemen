@@ -15,7 +15,7 @@ public class Gift {
     @Column(length = 50, nullable = false)
     private String giftName;
 
-    @Column(length = 50, nullable = false)
+    @Column(nullable = false)
     private String giftDescription;
 
     private String giftLink;
