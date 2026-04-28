@@ -1,6 +1,7 @@
 package co.simplon.wishmegift.entity;
 
 import co.simplon.wishmegift.enums.Theme;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name="list")
-public class List {
+public class WishList {
 
     @Id
     @GeneratedValue(strategy= GenerationType.UUID)
@@ -24,6 +25,7 @@ public class List {
 
     private String description;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date eventDate;
 
     @ManyToOne
@@ -35,10 +37,10 @@ public class List {
     @OneToMany
     private Set<Gift> gifts = new HashSet<>();
 
-    public List() {
+    public WishList() {
     }
 
-    public List(UUID id, String listName, Theme theme, String description, Date eventDate, User user, Set<Guest> guests, Set<Gift> gifts) {
+    public WishList(UUID id, String listName, Theme theme, String description, Date eventDate, User user, Set<Guest> guests, Set<Gift> gifts) {
         this.id = id;
         this.listName = listName;
         this.theme = theme;
