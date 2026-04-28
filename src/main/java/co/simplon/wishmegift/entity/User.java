@@ -1,7 +1,6 @@
 package co.simplon.wishmegift.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.processing.Pattern;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -37,6 +36,7 @@ public class User {
         this.email = email;
         this.lists = lists;
     }
+
 
     public UUID getId() {
         return id;
