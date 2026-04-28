@@ -1,0 +1,34 @@
+package co.simplon.wishmegift.controller;
+
+import co.simplon.wishmegift.entity.WishList;
+import co.simplon.wishmegift.service.WishListService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/wishlist")
+public class WishLIstController {
+    @Autowired
+    private WishListService wishListService;
+
+
+    @GetMapping
+    public Iterable<WishList> getWishList() {
+        return wishListService.getWishLists();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<WishList> getWishListById(@PathVariable UUID id) {
+        return wishListService.getWishListById(id);
+    }
+
+    @PostMapping
+    public WishList createWishList(@RequestBody WishList wishList) {
+        return wishListService.createWishList(wishList);
+    }
+
+
+}

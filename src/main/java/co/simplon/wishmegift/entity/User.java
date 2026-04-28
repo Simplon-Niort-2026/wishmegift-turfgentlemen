@@ -1,7 +1,6 @@
 package co.simplon.wishmegift.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.processing.Pattern;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,17 +24,17 @@ public class User {
     private String email;
 
     @OneToMany
-    private Set<List> lists =  new HashSet<>();
+    private Set<WishList> wishLists =  new HashSet<>();
 
     public User() {
     }
 
-    public User(String username, String password, UUID id, String email, Set<List> lists) {
+    public User(String username, String password, UUID id, String email, Set<WishList> wishLists) {
         this.username = username;
         this.password = password;
         this.id = id;
         this.email = email;
-        this.lists = lists;
+        this.wishLists = wishLists;
     }
 
     public UUID getId() {
@@ -70,11 +69,11 @@ public class User {
         this.email = email;
     }
 
-    public Set<List> getLists() {
-        return lists;
+    public Set<WishList> getLists() {
+        return wishLists;
     }
 
-    public void setLists(Set<List> lists) {
-        this.lists = lists;
+    public void setLists(Set<WishList> wishLists) {
+        this.wishLists = wishLists;
     }
 }

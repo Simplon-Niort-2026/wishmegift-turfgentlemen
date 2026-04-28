@@ -30,7 +30,7 @@ public class Gift {
     private Boolean isReserved = false;
 
     @ManyToOne
-    private List list;
+    private WishList wishList;
 
     @ManyToOne
     private Guest guest;
@@ -38,7 +38,7 @@ public class Gift {
     public Gift() {
     }
 
-    public Gift(UUID giftId, String giftName, String giftDescription, String giftLink, Level level, Integer price, Boolean isReserved, List list, Guest guest) {
+    public Gift(UUID giftId, String giftName, String giftDescription, String giftLink, Level level, Integer price, Boolean isReserved, WishList wishList, Guest guest) {
         this.giftId = giftId;
         this.giftName = giftName;
         this.giftDescription = giftDescription;
@@ -46,7 +46,7 @@ public class Gift {
         this.level = level;
         this.price = price;
         this.isReserved = isReserved;
-        this.list = list;
+        this.wishList = wishList;
         this.guest = guest;
     }
 
@@ -106,12 +106,12 @@ public class Gift {
         isReserved = reserved;
     }
 
-    public List getList() {
-        return list;
+    public WishList getList() {
+        return wishList;
     }
 
-    public void setList(List list) {
-        this.list = list;
+    public void setList(WishList wishList) {
+        this.wishList = wishList;
     }
 
     public Guest getGuest() {

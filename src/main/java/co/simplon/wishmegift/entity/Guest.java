@@ -15,7 +15,7 @@ public class Guest {
     private UUID guestId;
 
     @ManyToMany
-    private Set<List> lists = new HashSet<>();
+    private Set<WishList> wishLists = new HashSet<>();
 
     @OneToMany
     private Set<Gift> gift =  new HashSet<>();
@@ -23,9 +23,9 @@ public class Guest {
     public Guest() {
     }
 
-    public Guest(UUID guestId, Set<List> lists, Set<Gift> gift) {
+    public Guest(UUID guestId, Set<WishList> wishLists, Set<Gift> gift) {
         this.guestId = guestId;
-        this.lists = lists;
+        this.wishLists = wishLists;
         this.gift = gift;
     }
 
@@ -37,12 +37,12 @@ public class Guest {
         this.guestId = guestId;
     }
 
-    public Set<List> getLists() {
-        return lists;
+    public Set<WishList> getLists() {
+        return wishLists;
     }
 
-    public void setLists(Set<List> lists) {
-        this.lists = lists;
+    public void setLists(Set<WishList> wishLists) {
+        this.wishLists = wishLists;
     }
 
     public Set<Gift> getGift() {
