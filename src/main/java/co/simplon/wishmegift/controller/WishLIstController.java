@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/wishlist")
-public class WishLIstController {
+public class WishListController {
     @Autowired
     private WishListService wishListService;
 
