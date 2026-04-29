@@ -12,8 +12,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/wishlist")
 public class WishListController {
-    @Autowired
-    private WishListService wishListService;
+
+    private final WishListService wishListService;
+
+    public WishListController(WishListService wishListService) {
+        this.wishListService = wishListService;
+    }
 
     @GetMapping
     public Iterable<WishList> getWishList() {
@@ -28,12 +32,17 @@ public class WishListController {
     @PostMapping("/{ownerId}")
     public ResponseEntity<WishList> createWishList(@PathVariable UUID ownerId, @RequestBody WishList wishList) {
 
-        return wishListService.createWishList(id,wishList);
+        return wishListService.createWishList(ownerId,wishList);
     }
 
     @PatchMapping("/share/{wishListId}/{guestId}")
     public ResponseEntity<WishList> addGuestToWishList(@PathVariable UUID wishListId, @PathVariable UUID guestId ) {
         return wishListService.addGuestToWishList(wishListId,guestId);
+    }
+
+    @PatchMapping("/addGift/{wishListId}/{giftId}")
+    public ResponseEntity<WishList> addGiftToWishList(@PathVariable UUID wishListId, @PathVariable UUID giftId) {
+        return wishListService.addGiftToWishList(wishListId, giftId);
     }
 
 }

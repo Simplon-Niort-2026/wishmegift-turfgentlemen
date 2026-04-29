@@ -1,10 +1,9 @@
 package co.simplon.wishmegift.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 
 
-
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,15 +30,19 @@ public class User {
     @OneToMany
     private Set<WishList> wishLists;
 
+    @OneToMany
+    private Set<Gift> gifts =  new HashSet<>();
+
     public User() {
     }
 
-    public User(String username, String password, UUID id, String email, Set<WishList> wishLists) {
+    public User(String username, String password, UUID id, String email, Set<WishList> wishLists, Set<Gift> gifts) {
         this.username = username;
         this.password = password;
         this.id = id;
         this.email = email;
         this.wishLists = wishLists;
+        this.gifts = gifts;
     }
 
 
