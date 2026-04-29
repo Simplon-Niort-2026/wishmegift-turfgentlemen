@@ -20,10 +20,11 @@ public class User {
     @Column(length = 50, nullable = false)
     private String username;
 
-
+    @Pattern(regexp ="^(?=.*[a-zA-Z0-9\\-])(?=.*[!@#$%?^&*]).{12,}$")
     @Column(nullable = false)
     private String password;
 
+    @Pattern(regexp = "^((?!\\.)[\\w\\-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$")
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
