@@ -25,8 +25,8 @@ public class WishListController {
         return wishListService.getWishListById(id);
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<WishList> createWishList(@PathVariable UUID id, @RequestBody WishList wishList) {
+    @PostMapping("/{ownerId}")
+    public ResponseEntity<WishList> createWishList(@PathVariable UUID ownerId, @RequestBody WishList wishList) {
 
         return wishListService.createWishList(id,wishList);
     }
