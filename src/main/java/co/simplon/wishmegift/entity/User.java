@@ -1,10 +1,13 @@
 package co.simplon.wishmegift.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 
-import java.util.HashSet;
+
+
 import java.util.Set;
 import java.util.UUID;
+
 
 @Entity
 @Table(name = "users")
@@ -17,14 +20,16 @@ public class User {
     @Column(length = 50, nullable = false)
     private String username;
 
+
     @Column(nullable = false)
     private String password;
 
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
+
     @OneToMany
-    private Set<WishList> wishLists =  new HashSet<>();
+    private Set<WishList> wishLists;
 
     public User() {
     }
