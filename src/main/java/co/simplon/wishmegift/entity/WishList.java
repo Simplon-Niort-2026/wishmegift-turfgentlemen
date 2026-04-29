@@ -34,7 +34,7 @@ public class WishList {
     private User owner;
 
     @ManyToMany
-    private Set<Guest> guests = new HashSet<>();
+    private Set<User> guests = new HashSet<>();
 
     @OneToMany
     private Set<Gift> gifts = new HashSet<>();
@@ -42,7 +42,7 @@ public class WishList {
     public WishList() {
     }
 
-    public WishList(UUID id, String listName, Theme theme, String description, Date eventDate, User owner, Set<Guest> guests, Set<Gift> gifts) {
+    public WishList(UUID id, String listName, Theme theme, String description, Date eventDate, User owner, Set<User> guests, Set<Gift> gifts) {
         this.id = id;
         this.listName = listName;
         this.theme = theme;
@@ -100,11 +100,11 @@ public class WishList {
         this.owner = owner;
     }
 
-    public Set<Guest> getGuests() {
+    public Set<User> getGuests() {
         return guests;
     }
 
-    public void setGuests(Set<Guest> guests) {
+    public void setGuests(Set<User> guests) {
         this.guests = guests;
     }
 

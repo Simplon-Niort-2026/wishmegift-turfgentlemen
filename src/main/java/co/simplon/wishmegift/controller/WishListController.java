@@ -31,5 +31,9 @@ public class WishListController {
         return wishListService.createWishList(id,wishList);
     }
 
+    @PatchMapping("/share/{wishListId}/{guestId}")
+    public ResponseEntity<WishList> addGuestToWishList(@PathVariable UUID wishListId, @PathVariable UUID guestId ) {
+        return wishListService.addGuestToWishList(wishListId,guestId);
+    }
 
 }
