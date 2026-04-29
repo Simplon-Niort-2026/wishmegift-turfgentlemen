@@ -3,6 +3,7 @@ package co.simplon.wishmegift.controller;
 import co.simplon.wishmegift.entity.WishList;
 import co.simplon.wishmegift.service.WishListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -14,7 +15,6 @@ public class WishListController {
     @Autowired
     private WishListService wishListService;
 
-
     @GetMapping
     public Iterable<WishList> getWishList() {
         return wishListService.getWishLists();
@@ -25,9 +25,10 @@ public class WishListController {
         return wishListService.getWishListById(id);
     }
 
-    @PostMapping
-    public WishList createWishList(@RequestBody WishList wishList) {
-        return wishListService.createWishList(wishList);
+    @PostMapping("/{id}")
+    public ResponseEntity<WishList> createWishList(@PathVariable UUID id, @RequestBody WishList wishList) {
+
+        return wishListService.createWishList(id,wishList);
     }
 
 

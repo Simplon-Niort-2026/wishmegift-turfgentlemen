@@ -2,6 +2,7 @@ package co.simplon.wishmegift.entity;
 
 import co.simplon.wishmegift.enums.Theme;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 
@@ -28,8 +29,9 @@ public class WishList {
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date eventDate;
 
+    @JsonIgnore
     @ManyToOne
-    private User user;
+    private User owner;
 
     @ManyToMany
     private Set<Guest> guests = new HashSet<>();
@@ -40,13 +42,13 @@ public class WishList {
     public WishList() {
     }
 
-    public WishList(UUID id, String listName, Theme theme, String description, Date eventDate, User user, Set<Guest> guests, Set<Gift> gifts) {
+    public WishList(UUID id, String listName, Theme theme, String description, Date eventDate, User owner, Set<Guest> guests, Set<Gift> gifts) {
         this.id = id;
         this.listName = listName;
         this.theme = theme;
         this.description = description;
         this.eventDate = eventDate;
-        this.user = user;
+        this.owner = owner;
         this.guests = guests;
         this.gifts = gifts;
     }
@@ -91,12 +93,11 @@ public class WishList {
         this.eventDate = eventDate;
     }
 
-    public User getUser() {
-        return user;
+    public User getOwner() {
+        return owner;
     }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public Set<Guest> getGuests() {

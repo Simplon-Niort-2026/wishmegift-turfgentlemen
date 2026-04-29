@@ -5,12 +5,12 @@ info:
 
 http:
   method: POST
-  url: http://localhost:8080/wishlist
+  url: http://localhost:8080/wishlist/eef0561d-de7b-4fb6-b6af-e2c87e272e36
   body:
     type: json
     data: |-
       {
-        "listName": "la liste de moi même",
+        "listName": "la  deuxième liste",
         "theme": "NOEL",
         "description": "c'est pour mon noël",
         "eventDate": "2026-12-25"

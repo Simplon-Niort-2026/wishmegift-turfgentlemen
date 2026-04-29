@@ -3,6 +3,7 @@ package co.simplon.wishmegift.service;
 import co.simplon.wishmegift.config.AppConfig;
 import co.simplon.wishmegift.entity.User;
 import co.simplon.wishmegift.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public ResponseEntity<User> saveUser(User user) throws RuntimeException {
+    public ResponseEntity<User> saveUser( User user) throws RuntimeException {
         if (userRepository.existsByEmail(user.getEmail())) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
