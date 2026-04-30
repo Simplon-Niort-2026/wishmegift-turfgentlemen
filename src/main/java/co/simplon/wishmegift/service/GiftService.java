@@ -42,7 +42,7 @@ public class GiftService {
         Optional<Gift> gift = giftRepository.findById(giftId);
         Optional<WishList> wl = wishListRepository.findById(wishlistId);
         Optional<User> guest = userRepository.findById(guestId);
-        if(gift.isPresent() && wl.isPresent() && guest.isPresent()) {
+        if (gift.isPresent() && wl.isPresent() && guest.isPresent()) {
             Gift currentGift = gift.get();
             WishList currentWl = wl.get();
             User currentGuest = guest.get();
