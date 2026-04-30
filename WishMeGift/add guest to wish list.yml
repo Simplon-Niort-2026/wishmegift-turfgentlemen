@@ -1,0 +1,18 @@
+info:
+  name: add guest to wish list
+  type: http
+  seq: 6
+
+http:
+  method: PATCH
+  url: http://localhost:8080/wishlist/share/ba0590d5-735b-4793-ba39-84b37e0c094d/fe3003a1-18de-4b0f-8058-ae96c2194384
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -2,6 +2,7 @@ package co.simplon.wishmegift.controller;
 
 import co.simplon.wishmegift.entity.User;
 import co.simplon.wishmegift.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> userRegister(@RequestBody User user) {
+    public ResponseEntity<User> userRegister(@Valid @RequestBody User user) {
         return userService.saveUser(user);
     }
 
