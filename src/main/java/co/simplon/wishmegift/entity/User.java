@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 
 
-
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,10 +20,11 @@ public class User {
     @Column(length = 50, nullable = false)
     private String username;
 
-
+    @Pattern(regexp ="^(?=.*[a-zA-Z0-9\\-])(?=.*[!@#$%?^&*]).{12,}$")
     @Column(nullable = false)
     private String password;
 
+    @Pattern(regexp = "^((?!\\.)[\\w\\-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$")
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
@@ -31,15 +32,19 @@ public class User {
     @OneToMany
     private Set<WishList> wishLists;
 
+    @OneToMany
+    private Set<Gift> gifts =  new HashSet<>();
+
     public User() {
     }
 
-    public User(String username, String password, UUID id, String email, Set<WishList> wishLists) {
+    public User(String username, String password, UUID id, String email, Set<WishList> wishLists, Set<Gift> gifts) {
         this.username = username;
         this.password = password;
         this.id = id;
         this.email = email;
         this.wishLists = wishLists;
+        this.gifts = gifts;
     }
 
 

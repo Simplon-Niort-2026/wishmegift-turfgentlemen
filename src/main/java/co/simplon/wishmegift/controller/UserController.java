@@ -2,8 +2,7 @@ package co.simplon.wishmegift.controller;
 
 import co.simplon.wishmegift.entity.User;
 import co.simplon.wishmegift.service.UserService;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +13,11 @@ import java.util.UUID;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public Iterable<User> getAllUsers() {
@@ -28,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> userRegister(@RequestBody User user) {
+    public ResponseEntity<User> userRegister(@Valid @RequestBody User user) {
         return userService.saveUser(user);
     }
 

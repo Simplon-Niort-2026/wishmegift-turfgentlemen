@@ -33,12 +33,12 @@ public class Gift {
     private WishList wishList;
 
     @ManyToOne
-    private Guest guest;
+    private User user;
 
     public Gift() {
     }
 
-    public Gift(UUID giftId, String giftName, String giftDescription, String giftLink, Level level, Integer price, Boolean isReserved, WishList wishList, Guest guest) {
+    public Gift(UUID giftId, String giftName, String giftDescription, String giftLink, Level level, Integer price, Boolean isReserved, WishList wishList, User user) {
         this.giftId = giftId;
         this.giftName = giftName;
         this.giftDescription = giftDescription;
@@ -47,7 +47,7 @@ public class Gift {
         this.price = price;
         this.isReserved = isReserved;
         this.wishList = wishList;
-        this.guest = guest;
+        this.user = user;
     }
 
     public UUID getGiftId() {
@@ -102,8 +102,8 @@ public class Gift {
         return isReserved;
     }
 
-    public void setReserved(Boolean reserved) {
-        isReserved = reserved;
+    public void setReserved(Boolean isReserved) {
+        this.isReserved = !this.isReserved;
     }
 
     public WishList getList() {
@@ -114,11 +114,11 @@ public class Gift {
         this.wishList = wishList;
     }
 
-    public Guest getGuest() {
-        return guest;
+    public User getUser() {
+        return user;
     }
 
-    public void setGuest(Guest guest) {
-        this.guest = guest;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
