@@ -28,9 +28,35 @@ public class User {
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
-
     @OneToMany
     private Set<WishList> wishLists;
+
+    @ManyToMany(mappedBy = "guests")
+    private Set<WishList> guestLists;
+
+    public Set<WishList> getWishLists() {
+        return wishLists;
+    }
+
+    public void setWishLists(Set<WishList> wishLists) {
+        this.wishLists = wishLists;
+    }
+
+    public Set<WishList> getGuestLists() {
+        return guestLists;
+    }
+
+    public void setGuestLists(Set<WishList> guestLists) {
+        this.guestLists = guestLists;
+    }
+
+    public Set<Gift> getGifts() {
+        return gifts;
+    }
+
+    public void setGifts(Set<Gift> gifts) {
+        this.gifts = gifts;
+    }
 
     @OneToMany
     private Set<Gift> gifts =  new HashSet<>();
@@ -38,15 +64,15 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, UUID id, String email, Set<WishList> wishLists, Set<Gift> gifts) {
+    public User(UUID id, String username, String password, String email, Set<Gift> gifts, Set<WishList> guestLists, Set<WishList> wishLists) {
+        this.id = id;
         this.username = username;
         this.password = password;
-        this.id = id;
         this.email = email;
-        this.wishLists = wishLists;
         this.gifts = gifts;
+        this.guestLists = guestLists;
+        this.wishLists = wishLists;
     }
-
 
     public UUID getId() {
         return id;

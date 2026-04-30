@@ -31,6 +31,16 @@ public class WishListService {
         return wishListRepository.findAll();
     }
 
+    public Iterable<WishList> getGuestWishLists(UUID guestId) {
+        Optional<User> guest = userRepository.findById(guestId);
+        if(guest.isPresent()) {
+            User currentGuest = guest.get();
+            currentGuest.getGuestLists();
+            wishListRepository.findAll();
+        }
+       return null;
+    }
+
     public Optional<WishList> getWishListById(UUID id) {
         return wishListRepository.findById(id);
     }
@@ -52,23 +62,18 @@ public class WishListService {
 
     }
 
-    public ResponseEntity<WishList> addGuestToWishList(UUID wishListId, UUID guestId) {
+    public ResponseEntity<WishList> addGuestToWishList(UUID wishListId, UUID guestId, String email) {
         Optional<User> guest = userRepository.findById(guestId);
         Optional<WishList> wl = wishListRepository.findById(wishListId);
-        if (guest.isPresent() && wl.isPresent()) {
-            WishList currentWishList = wl.get();
-            User currentGuest = guest.get();
+        if (guest.isPresent() && wl.isPresent() ) {
+                WishList currentWishList = wl.get();
+                User currentGuest = guest.get();
+                if (currentGuest.getEmail().equals(email)) {
+                    currentWishList.getGuests().add(currentGuest);
 
-            Set<User> guestList = currentWishList.getGuests();
-            guestList.add(currentGuest);
-
-            wishListRepository.save(currentWishList);
-            return new ResponseEntity<>(currentWishList, HttpStatus.ACCEPTED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-
-        }
-
+                    wishListRepository.save(currentWishList);
+                    return new ResponseEntity<>(HttpStatus.ACCEPTED);
+                }
     }
 
     public ResponseEntity<WishList> addGiftToWishList(UUID wishListId, UUID ownerId, UUID giftId) {
@@ -85,6 +90,7 @@ public class WishListService {
                 wishListRepository.save(currentWl);
                 return new ResponseEntity<>(currentWl, HttpStatus.ACCEPTED);
             }
+
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
@@ -106,4 +112,5 @@ public class WishListService {
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
+
 }
