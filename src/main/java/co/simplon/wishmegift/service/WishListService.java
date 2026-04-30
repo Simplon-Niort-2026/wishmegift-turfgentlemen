@@ -71,18 +71,21 @@ public class WishListService {
 
     }
 
-    public ResponseEntity<WishList> addGiftToWishList(UUID wishListId, UUID giftId) {
-        Optional<Gift> gift = giftRepository.findById(giftId);
+    public ResponseEntity<WishList> addGiftToWishList(UUID wishListId, UUID ownerId, UUID giftId) {
         Optional<WishList> wl = wishListRepository.findById(wishListId);
-        if (gift.isPresent() && wl.isPresent()) {
-            Gift currentGift = gift.get();
+        Optional<User> owner = userRepository.findById(ownerId);
+        Optional<Gift> gift = giftRepository.findById(giftId);
+        if (gift.isPresent() && wl.isPresent() && owner.isPresent()) {
+            User currentOwner = owner.get();
             WishList currentWl = wl.get();
+            Gift currentGift = gift.get();
+            if (currentWl.getOwner() == currentOwner) {
+                currentWl.getGifts().add(currentGift);
 
-            Set<Gift> gifts = currentWl.getGifts();
+                wishListRepository.save(currentWl);
+                return new ResponseEntity<>(currentWl, HttpStatus.ACCEPTED);
+            }
 
-            gifts.add(currentGift);
-            wishListRepository.save(currentWl);
-            return new ResponseEntity<>(currentWl, HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
