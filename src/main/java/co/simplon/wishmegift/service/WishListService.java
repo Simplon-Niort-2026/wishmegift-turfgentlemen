@@ -35,8 +35,10 @@ public class WishListService {
         Optional<User> guest = userRepository.findById(guestId);
         if(guest.isPresent()) {
             User currentGuest = guest.get();
+            currentGuest.getGuestLists();
+            wishListRepository.findAll();
         }
-        return wishListRepository.findAll();
+       return null;
     }
 
     public Optional<WishList> getWishListById(UUID id) {
