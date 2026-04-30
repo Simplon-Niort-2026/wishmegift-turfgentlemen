@@ -40,9 +40,9 @@ public class WishListController {
         return wishListService.addGuestToWishList(wishListId,guestId);
     }
 
-    @PatchMapping("/addGift/{wishListId}/{giftId}")
-    public ResponseEntity<WishList> addGiftToWishList(@PathVariable UUID wishListId, @PathVariable UUID giftId) {
-        return wishListService.addGiftToWishList(wishListId, giftId);
+    @PatchMapping("/{wishListId}/owner/{ownerId}/gift/{giftId}")
+    public ResponseEntity<WishList> addGiftToWishList(@PathVariable UUID wishListId, @PathVariable UUID ownerId, @PathVariable UUID giftId) {
+        return wishListService.addGiftToWishList(wishListId, ownerId,  giftId);
     }
 
 }

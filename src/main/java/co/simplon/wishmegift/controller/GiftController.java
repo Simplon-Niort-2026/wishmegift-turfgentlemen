@@ -34,9 +34,9 @@ public class GiftController {
         return giftService.saveGift(gift);
     }
 
-    @PatchMapping("/{giftId}")
-    public ResponseEntity<Gift> reserveGift(@PathVariable UUID giftId) {
-        return giftService.updateGift(giftId);
+    @PatchMapping("/{giftId}/wishlist/{wishlistId}/guest/{guestId}")
+    public ResponseEntity<Gift> reserveGift(@PathVariable UUID giftId, @PathVariable UUID wishlistId, @PathVariable UUID guestId) {
+        return giftService.reserveGift(giftId, wishlistId, guestId);
     }
 
     @DeleteMapping("/{id}")

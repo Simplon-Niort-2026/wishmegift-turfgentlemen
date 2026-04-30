@@ -1,6 +1,7 @@
 package co.simplon.wishmegift.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 
 
 import java.util.HashSet;
