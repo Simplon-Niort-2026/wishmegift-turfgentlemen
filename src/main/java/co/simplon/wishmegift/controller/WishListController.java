@@ -24,6 +24,11 @@ public class WishListController {
         return wishListService.getWishLists();
     }
 
+    @GetMapping("/guest/{guestId}")
+    public Iterable<WishList> getGuestWishLists(UUID guestId){
+        return wishListService.getGuestWishLists(guestId);
+    }
+
     @GetMapping("/{id}")
     public Optional<WishList> getWishListById(@PathVariable UUID id) {
         return wishListService.getWishListById(id);
@@ -36,8 +41,8 @@ public class WishListController {
     }
 
     @PatchMapping("/share/{wishListId}/{guestId}")
-    public ResponseEntity<WishList> addGuestToWishList(@PathVariable UUID wishListId, @PathVariable UUID guestId, @RequestBody String email, @RequestBody UUID ownerId) {
-        return wishListService.addGuestToWishList(wishListId, guestId, email, ownerId);
+    public ResponseEntity<WishList> addGuestToWishList(@PathVariable UUID wishListId, @PathVariable UUID guestId) {
+        return wishListService.addGuestToWishList(wishListId, guestId);
     }
 
     @PatchMapping("/{wishListId}/owner/{ownerId}/addgift/{giftId}")

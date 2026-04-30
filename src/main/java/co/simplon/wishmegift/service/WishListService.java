@@ -33,12 +33,11 @@ public class WishListService {
 
     public Iterable<WishList> getGuestWishLists(UUID guestId) {
         Optional<User> guest = userRepository.findById(guestId);
-        if(guest.isPresent()) {
+        if (guest.isPresent()) {
             User currentGuest = guest.get();
-            currentGuest.getGuestLists();
-            wishListRepository.findAll();
+            return currentGuest.getGuestLists();
         }
-       return null;
+        return null;
     }
 
     public Optional<WishList> getWishListById(UUID id) {
@@ -62,55 +61,56 @@ public class WishListService {
 
     }
 
-    public ResponseEntity<WishList> addGuestToWishList(UUID wishListId, UUID guestId, String email) {
+    public ResponseEntity<WishList> addGuestToWishList(UUID wishListId, UUID guestId) {
         Optional<User> guest = userRepository.findById(guestId);
         Optional<WishList> wl = wishListRepository.findById(wishListId);
-        if (guest.isPresent() && wl.isPresent() ) {
-                WishList currentWishList = wl.get();
-                User currentGuest = guest.get();
-                if (currentGuest.getEmail().equals(email)) {
-                    currentWishList.getGuests().add(currentGuest);
+        if (guest.isPresent() && wl.isPresent()) {
+            WishList currentWishList = wl.get();
+            User currentGuest = guest.get();
+            currentWishList.getGuests().add(currentGuest);
+            wishListRepository.save(currentWishList);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
 
-                    wishListRepository.save(currentWishList);
-                    return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+        public ResponseEntity<WishList> addGiftToWishList (UUID wishListId, UUID ownerId, UUID giftId){
+            Optional<WishList> wl = wishListRepository.findById(wishListId);
+            Optional<User> owner = userRepository.findById(ownerId);
+            Optional<Gift> gift = giftRepository.findById(giftId);
+            if (gift.isPresent() && wl.isPresent() && owner.isPresent()) {
+                User currentOwner = owner.get();
+                WishList currentWl = wl.get();
+                Gift currentGift = gift.get();
+                if (currentWl.getOwner() == currentOwner) {
+                    currentWl.getGifts().add(currentGift);
+
+                    wishListRepository.save(currentWl);
+                    return new ResponseEntity<>(currentWl, HttpStatus.ACCEPTED);
                 }
-    }
 
-    public ResponseEntity<WishList> addGiftToWishList(UUID wishListId, UUID ownerId, UUID giftId) {
-        Optional<WishList> wl = wishListRepository.findById(wishListId);
-        Optional<User> owner = userRepository.findById(ownerId);
-        Optional<Gift> gift = giftRepository.findById(giftId);
-        if (gift.isPresent() && wl.isPresent() && owner.isPresent()) {
-            User currentOwner = owner.get();
-            WishList currentWl = wl.get();
-            Gift currentGift = gift.get();
-            if (currentWl.getOwner() == currentOwner) {
-                currentWl.getGifts().add(currentGift);
-
-                wishListRepository.save(currentWl);
-                return new ResponseEntity<>(currentWl, HttpStatus.ACCEPTED);
             }
-
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-    }
 
-    public ResponseEntity<WishList> removeGiftToWishList(UUID wishListId, UUID ownerId, UUID giftId) {
-        Optional<WishList> wl = wishListRepository.findById(wishListId);
-        Optional<User> owner = userRepository.findById(ownerId);
-        Optional<Gift> gift = giftRepository.findById(giftId);
-        if (gift.isPresent() && wl.isPresent() && owner.isPresent()) {
-            User currentOwner = owner.get();
-            WishList currentWl = wl.get();
-            Gift currentGift = gift.get();
-            if (currentWl.getOwner() == currentOwner) {
-                currentWl.getGifts().remove(currentGift);
-                giftRepository.delete(currentGift);
-                wishListRepository.save(currentWl);
-                return new ResponseEntity<>(currentWl, HttpStatus.ACCEPTED);
+        public ResponseEntity<WishList> removeGiftToWishList (UUID wishListId, UUID ownerId, UUID giftId){
+            Optional<WishList> wl = wishListRepository.findById(wishListId);
+            Optional<User> owner = userRepository.findById(ownerId);
+            Optional<Gift> gift = giftRepository.findById(giftId);
+            if (gift.isPresent() && wl.isPresent() && owner.isPresent()) {
+                User currentOwner = owner.get();
+                WishList currentWl = wl.get();
+                Gift currentGift = gift.get();
+                if (currentWl.getOwner() == currentOwner) {
+                    currentWl.getGifts().remove(currentGift);
+                    giftRepository.delete(currentGift);
+                    wishListRepository.save(currentWl);
+                    return new ResponseEntity<>(currentWl, HttpStatus.ACCEPTED);
+                }
             }
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
     }
 
-}

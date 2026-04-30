@@ -28,8 +28,12 @@ public class User {
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
-    @OneToMany
+    @OneToMany(mappedBy = "owner")
     private Set<WishList> wishLists;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Gift> gifts = new HashSet<>();
+
 
     @ManyToMany(mappedBy = "guests")
     private Set<WishList> guestLists;
@@ -57,9 +61,6 @@ public class User {
     public void setGifts(Set<Gift> gifts) {
         this.gifts = gifts;
     }
-
-    @OneToMany
-    private Set<Gift> gifts =  new HashSet<>();
 
     public User() {
     }
