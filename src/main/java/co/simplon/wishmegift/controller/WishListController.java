@@ -25,7 +25,7 @@ public class WishListController {
     }
 
     @GetMapping("/guest/{guestId}")
-    public Iterable<WishList> getGuestWishLists(UUID guestId){
+    public Iterable<WishList> getGuestWishLists(@PathVariable UUID guestId){
         return wishListService.getGuestWishLists(guestId);
     }
 

@@ -34,7 +34,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Gift> gifts = new HashSet<>();
 
-
     @ManyToMany(mappedBy = "guests")
     private Set<WishList> guestLists;
 
