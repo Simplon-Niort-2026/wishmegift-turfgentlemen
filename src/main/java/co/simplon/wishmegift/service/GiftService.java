@@ -46,13 +46,12 @@ public class GiftService {
             Gift currentGift = gift.get();
             WishList currentWl = wl.get();
             User currentGuest = guest.get();
-            if (currentWl.getGuests().contains(currentGuest)) {
+            if (currentWl.getOwner() != currentGuest && currentWl.getGuests().contains(currentGuest)) {
                 currentGift.setReserved(currentGift.getReserved());
 
                 saveGift(currentGift);
                 return new ResponseEntity<>(currentGift, HttpStatus.ACCEPTED);
             }
-
         }
 
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
