@@ -2,7 +2,7 @@ package co.simplon.wishmegift.controller;
 
 import co.simplon.wishmegift.entity.User;
 import co.simplon.wishmegift.service.UserService;
-import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

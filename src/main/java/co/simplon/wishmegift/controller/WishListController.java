@@ -28,11 +28,16 @@ public class WishListController {
     @PostMapping("/{ownerId}")
     public ResponseEntity<WishList> createWishList(@PathVariable UUID ownerId, @RequestBody WishList wishList) {
 
-        return wishListService.createWishList(id,wishList);
+        return wishListService.createWishList(ownerId,wishList);
     }
 
     @PatchMapping("/share/{wishListId}/{guestId}")
     public ResponseEntity<WishList> addGuestToWishList(@PathVariable UUID wishListId, @PathVariable UUID guestId ) {
+        return wishListService.addGuestToWishList(wishListId,guestId);
+    }
+
+    @GetMapping("/guests")
+    public ResponseEntity<WishList> shareWishListToGuest(@PathVariable UUID wishListId, @PathVariable UUID guestId) {
         return wishListService.addGuestToWishList(wishListId,guestId);
     }
 

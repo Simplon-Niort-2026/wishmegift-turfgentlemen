@@ -72,4 +72,17 @@ public class WishListService {
         }
 
     }
+
+    public WishList shareWishListToGuest(UUID wishListId, UUID guestId) {
+        Optional<WishList> wl = wishListRepository.findById(wishListId);
+        Optional<User> guest = userRepository.findById(guestId);
+        if (wl.isPresent() && guest.isPresent()) {
+            WishList currentWishList = wl.get();
+            User currentGuest = guest.get();
+            Set<User> guestList = currentWishList.getGuests();
+            wishListRepository.findById(wishListId);
+            return wl.get();
+        }
+        return null;
+    }
 }
