@@ -13,9 +13,11 @@ import java.util.UUID;
 @RequestMapping("/gift")
 public class GiftController {
 
+    private final GiftService giftService;
 
-    @Autowired
-    private GiftService giftService;
+    public GiftController(GiftService giftService) {
+        this.giftService = giftService;
+    }
 
     @GetMapping()
     public Iterable<Gift> getAllGifts() {
@@ -32,9 +34,9 @@ public class GiftController {
         return giftService.saveGift(gift);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Gift> reserveGift(@PathVariable UUID id, @RequestBody Gift gift) {
-        return giftService.updateGift(id, gift);
+    @PatchMapping("/{giftId}")
+    public ResponseEntity<Gift> reserveGift(@PathVariable UUID giftId) {
+        return giftService.updateGift(giftId);
     }
 
     @DeleteMapping("/{id}")

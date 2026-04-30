@@ -1,16 +1,14 @@
 package co.simplon.wishmegift.service;
 
-import co.simplon.wishmegift.entity.Guest;
+import co.simplon.wishmegift.entity.Gift;
 import co.simplon.wishmegift.entity.User;
 import co.simplon.wishmegift.entity.WishList;
-import co.simplon.wishmegift.repository.GuestRepository;
+import co.simplon.wishmegift.repository.GiftRepository;
 import co.simplon.wishmegift.repository.UserRepository;
 import co.simplon.wishmegift.repository.WishListRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 import java.util.Set;
@@ -19,15 +17,15 @@ import java.util.UUID;
 @Service
 public class WishListService {
 
-    @Autowired
-    private WishListRepository wishListRepository;
+    private final WishListRepository wishListRepository;
+    private final UserRepository userRepository;
+    private final GiftRepository giftRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private GuestRepository guestRepository;
-
+    public WishListService(WishListRepository wishListRepository, UserRepository userRepository, GiftRepository giftRepository) {
+        this.wishListRepository = wishListRepository;
+        this.userRepository = userRepository;
+        this.giftRepository = giftRepository;
+    }
 
     public Iterable<WishList> getWishLists() {
         return wishListRepository.findAll();
@@ -65,11 +63,28 @@ public class WishListService {
             guestList.add(currentGuest);
 
             wishListRepository.save(currentWishList);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(currentWishList, HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         }
+
+    }
+
+    public ResponseEntity<WishList> addGiftToWishList(UUID wishListId, UUID giftId) {
+        Optional<Gift> gift = giftRepository.findById(giftId);
+        Optional<WishList> wl = wishListRepository.findById(wishListId);
+        if (gift.isPresent() && wl.isPresent()) {
+            Gift currentGift = gift.get();
+            WishList currentWl = wl.get();
+
+            Set<Gift> gifts = currentWl.getGifts();
+
+            gifts.add(currentGift);
+            wishListRepository.save(currentWl);
+            return new ResponseEntity<>(currentWl, HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
     }
 }
