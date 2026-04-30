@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> userRegister(@RequestBody User user) {
+    public ResponseEntity<User> userRegister(@Valid @RequestBody User user) {
         return userService.saveUser(user);
     }
 
