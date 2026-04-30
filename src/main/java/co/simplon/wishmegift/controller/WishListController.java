@@ -32,7 +32,7 @@ public class WishListController {
     @PostMapping("/{ownerId}")
     public ResponseEntity<WishList> createWishList(@PathVariable UUID ownerId, @RequestBody WishList wishList) {
 
-        return wishListService.createWishList(ownerId,wishList);
+        return wishListService.createWishList(ownerId, wishList);
     }
 
     @PatchMapping("/share/{wishListId}/{guestId}")
