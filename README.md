@@ -30,7 +30,7 @@ API REST avec Spring Boot et PostgreSQL permettant de gérer des listes de souha
 git clone https://github.com/Simplon-Niort-2026/wishmegift-turfgentlemen.git
 ```
 
-### Pré-recquis
+### Prérequis
 - Java 21
 - PostgreSQL
 - Maven
