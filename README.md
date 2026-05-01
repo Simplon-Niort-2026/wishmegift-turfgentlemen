@@ -24,6 +24,12 @@ API REST avec Spring Boot et PostgreSQL permettant de gérer des listes de souha
 
 ## Comment démarrer l'application
 
+### Cloner le projet 
+
+```bash
+git clone https://github.com/Simplon-Niort-2026/wishmegift-turfgentlemen.git
+```
+
 ### Pré-recquis
 - Java 21
 - PostgreSQL
@@ -43,6 +49,46 @@ spring.jpa.hibernate.ddl-auto=create
 
 ```bash
 mvn spring-boot:run
+```
+
+## Structure du projet
+
+```
+WishMeGift/
+├── src/
+│   ├── main/
+│   │   ├── java/co/simplon/wishmegift/
+│   │   │   ├── config/                      # Sécurité et configuration de l'application
+│   │   │   │   └── AppConfig.java
+│   │   │   ├── controller/                  # REST controllers 
+│   │   │   │   ├── GiftController.java
+│   │   │   │   ├── UserController.java
+│   │   │   │   └── WishListController.java
+│   │   │   ├── entity/                      # Entités JPA 
+│   │   │   │   ├── Gift.java
+│   │   │   │   ├── User.java
+│   │   │   │   └── WishList.java
+│   │   │   ├── enums/                       # Enumerations (Level, Theme)
+│   │   │   │   ├── Level.java
+│   │   │   │   └── Theme.java
+│   │   │   ├── repository/                  # Spring Data JPA repositories
+│   │   │   │   ├── GiftRepository.java
+│   │   │   │   ├── UserRepository.java
+│   │   │   │   └── WishListRepository.java
+│   │   │   ├── service/                     # Logique métier
+│   │   │   │   ├── GiftService.java
+│   │   │   │   ├── UserService.java
+│   │   │   │   └── WishListService.java
+│   │   │   └── WishmegiftApplication.java   # Application
+│   │   └── resources/
+│   │       └── application.properties       # Configuration bdd et application
+│   └── test/                               
+├── Cahier des charges projet WishMeGift.md  
+├── Documentation.md                         # MCD / MLD
+├── mvnw
+├── mvnw.cmd
+├── pom.xml                                  # Dépendances Maven 
+└── README.md
 ```
 
 ## Liste des Endpoints
