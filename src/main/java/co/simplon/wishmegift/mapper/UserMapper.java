@@ -12,6 +12,7 @@ public class UserMapper {
 
     public User toUser(UserCreateDTO userCreateDTO) {
         User user = new User();
+        user.setId(userCreateDTO.getId());
         user.setUsername(userCreateDTO.getUsername());
         user.setEmail(userCreateDTO.getEmail());
         user.setPassword(userCreateDTO.getPassword());
@@ -20,6 +21,7 @@ public class UserMapper {
 
     public UserResponseDTO toUserResponseDTO(User user) {
         UserResponseDTO userResponseDTO = new UserResponseDTO();
+        userResponseDTO.setId(user.getId());
         userResponseDTO.setUsername(user.getUsername());
         userResponseDTO.setEmail(user.getEmail());
         return userResponseDTO;

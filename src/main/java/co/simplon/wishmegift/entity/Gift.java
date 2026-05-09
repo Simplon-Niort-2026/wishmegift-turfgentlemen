@@ -2,15 +2,15 @@ package co.simplon.wishmegift.entity;
 
 import co.simplon.wishmegift.enums.Level;
 import jakarta.persistence.*;
+import lombok.Data;
 
-import java.util.UUID;
-
+@Data
 @Entity
 @Table(name="gift")
 public class Gift {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID giftId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long giftId;
 
     @Column(length = 50, nullable = false)
     private String giftName;
@@ -38,7 +38,7 @@ public class Gift {
     public Gift() {
     }
 
-    public Gift(UUID giftId, String giftName, String giftDescription, String giftLink, Level level, Integer price, Boolean isReserved, WishList wishList, User user) {
+    public Gift(Long giftId, String giftName, String giftDescription, String giftLink, Level level, Integer price, Boolean isReserved, WishList wishList, User user) {
         this.giftId = giftId;
         this.giftName = giftName;
         this.giftDescription = giftDescription;
@@ -50,53 +50,6 @@ public class Gift {
         this.user = user;
     }
 
-    public UUID getGiftId() {
-        return giftId;
-    }
-
-    public void setGiftId(UUID giftId) {
-        this.giftId = giftId;
-    }
-
-    public String getGiftName() {
-        return giftName;
-    }
-
-    public void setGiftName(String giftName) {
-        this.giftName = giftName;
-    }
-
-    public String getGiftDescription() {
-        return giftDescription;
-    }
-
-    public void setGiftDescription(String giftDescription) {
-        this.giftDescription = giftDescription;
-    }
-
-    public String getGiftLink() {
-        return giftLink;
-    }
-
-    public void setGiftLink(String giftLink) {
-        this.giftLink = giftLink;
-    }
-
-    public Level getLevel() {
-        return level;
-    }
-
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
 
     public Boolean getReserved() {
         return isReserved;
@@ -106,19 +59,4 @@ public class Gift {
         this.isReserved = !this.isReserved;
     }
 
-    public WishList getWishList() {
-        return wishList;
-    }
-
-    public void setWishList(WishList wishList) {
-        this.wishList = wishList;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

@@ -5,8 +5,6 @@ import co.simplon.wishmegift.dto.UserResponseDTO;
 import co.simplon.wishmegift.entity.User;
 import co.simplon.wishmegift.mapper.UserMapper;
 import co.simplon.wishmegift.repository.UserRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +32,7 @@ public class UserService {
                 .toList();
     }
 
-    public Optional<UserResponseDTO> getUserById(UUID id) {
+    public Optional<UserResponseDTO> getUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
         return user.map(userMapper::toUserResponseDTO);
     }
@@ -51,12 +49,12 @@ public class UserService {
 
     }
 
-    public Optional<UserResponseDTO> updateUser(UUID id, UserCreateDTO userCreateDTO) {
+    public Optional<UserResponseDTO> updateUser(Long id, UserCreateDTO userCreateDTO) {
         Optional<User> u = userRepository.findById(id);
         if (u.isPresent()) {
             User currentUser = u.get();
             currentUser.setUsername(userCreateDTO.getUsername());
-            currentUser.setEmail((userCreateDTO.getEmail()));
+            // currentUser.setEmail((userCreateDTO.getEmail()));
             currentUser.setPassword(passwordEncoder.encode(userCreateDTO.getPassword()));
 
             userRepository.save(currentUser);
@@ -66,7 +64,7 @@ public class UserService {
         return Optional.empty();
     }
 
-    public void deleteUser(UUID id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 }

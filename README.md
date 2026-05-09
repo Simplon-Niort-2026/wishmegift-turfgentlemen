@@ -27,7 +27,7 @@ API REST avec Spring Boot et PostgreSQL permettant de gérer des listes de souha
 ### Cloner le projet 
 
 ```bash
-git clone https://github.com/Simplon-Niort-2026/wishmegift-turfgentlemen.git
+git clone https://github.com/aymlpz92/wishmegift-turfgentlemen.git
 ```
 
 ### Prérequis

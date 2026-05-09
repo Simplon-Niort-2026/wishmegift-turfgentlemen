@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface WishListRepository extends JpaRepository<WishList, UUID> {
+public interface WishListRepository extends JpaRepository<WishList, Long> {
 }

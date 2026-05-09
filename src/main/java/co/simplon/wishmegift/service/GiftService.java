@@ -38,18 +38,22 @@ public class GiftService {
                 .toList();
     }
 
-    public Optional<GiftDTO> getGiftById(UUID id) {
-        Optional<Gift> gift = giftRepository.findById(id);
+    public Optional<GiftDTO> getGiftById(Long GiftId) {
+        Optional<Gift> gift = giftRepository.findById(GiftId);
         return gift.map(giftMapper::toGiftDTO);
     }
 
-    public GiftDTO createGift(GiftDTO giftDTO) {
-        Gift gift = giftMapper.toGift(giftDTO);
-        giftRepository.save(gift);
-        return giftMapper.toGiftDTO(gift);
+    public Optional<GiftDTO> createGift(Long userId, GiftDTO giftDTO) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            Gift gift = giftMapper.toGift(giftDTO);
+            giftRepository.save(gift);
+            return Optional.of(giftMapper.toGiftDTO(gift));
+        }
+        return Optional.empty();
     }
 
-    public Optional<GiftDTO> reserveGift(UUID giftId, UUID wishlistId, UUID guestId) {
+    public Optional<GiftDTO> reserveGift(Long giftId, Long wishlistId, Long guestId) {
         Optional<Gift> gift = giftRepository.findById(giftId);
         Optional<WishList> wl = wishListRepository.findById(wishlistId);
         Optional<User> guest = userRepository.findById(guestId);
@@ -69,7 +73,7 @@ public class GiftService {
 
     }
 
-    public void deleteGiftById(UUID id) {
+    public void deleteGiftById(Long id) {
         giftRepository.deleteById(id);
     }
 }

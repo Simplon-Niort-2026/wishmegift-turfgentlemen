@@ -9,6 +9,7 @@ public class WishListMapper {
 
     public WishListDTO toWishListDTO(WishList wishList) {
         WishListDTO wishListDTO = new WishListDTO();
+        wishListDTO.setId(wishList.getId());
         wishListDTO.setListName(wishList.getListName());
         wishListDTO.setDescription(wishList.getDescription());
         wishListDTO.setEventDate(wishList.getEventDate());
@@ -18,6 +19,7 @@ public class WishListMapper {
 
     public WishList toWishList(WishListDTO wishListDTO) {
         WishList wishList = new WishList();
+        wishList.setId(wishListDTO.getId());
         wishList.setListName(wishListDTO.getListName());
         wishList.setDescription(wishListDTO.getDescription());
         wishList.setEventDate(wishListDTO.getEventDate());

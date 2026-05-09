@@ -9,6 +9,7 @@ public class GiftMapper {
 
     public Gift toGift(GiftDTO giftDTO) {
         Gift gift = new Gift();
+        gift.setGiftId(giftDTO.getId());
         gift.setGiftName(giftDTO.getGiftName());
         gift.setGiftDescription(giftDTO.getGiftDescription());
         gift.setGiftLink(giftDTO.getGiftLink());
@@ -20,6 +21,7 @@ public class GiftMapper {
 
     public GiftDTO toGiftDTO(Gift gift) {
         GiftDTO giftDTO = new GiftDTO();
+        giftDTO.setId(gift.getGiftId());
         giftDTO.setGiftName(gift.getGiftName());
         giftDTO.setGiftDescription(gift.getGiftDescription());
         giftDTO.setGiftLink(gift.getGiftLink());

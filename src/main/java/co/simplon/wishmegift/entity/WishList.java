@@ -4,20 +4,21 @@ import co.simplon.wishmegift.enums.Theme;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
 
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
+@Data
 @Entity
 @Table(name="list")
 public class WishList {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long id;
 
     private String listName;
 
@@ -42,7 +43,7 @@ public class WishList {
     public WishList() {
     }
 
-    public WishList(UUID id, String listName, Theme theme, String description, Date eventDate, User owner, Set<User> guests, Set<Gift> gifts) {
+    public WishList(Long id, String listName, Theme theme, String description, Date eventDate, User owner, Set<User> guests, Set<Gift> gifts) {
         this.id = id;
         this.listName = listName;
         this.theme = theme;
@@ -53,66 +54,4 @@ public class WishList {
         this.gifts = gifts;
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getListName() {
-        return listName;
-    }
-
-    public void setListName(String listName) {
-        this.listName = listName;
-    }
-
-    public Theme getTheme() {
-        return theme;
-    }
-
-    public void setTheme(Theme theme) {
-        this.theme = theme;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getEventDate() {
-        return eventDate;
-    }
-
-    public void setEventDate(Date eventDate) {
-        this.eventDate = eventDate;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public Set<User> getGuests() {
-        return guests;
-    }
-
-    public void setGuests(Set<User> guests) {
-        this.guests = guests;
-    }
-
-    public Set<Gift> getGifts() {
-        return gifts;
-    }
-
-    public void setGifts(Set<Gift> gifts) {
-        this.gifts = gifts;
-    }
 }

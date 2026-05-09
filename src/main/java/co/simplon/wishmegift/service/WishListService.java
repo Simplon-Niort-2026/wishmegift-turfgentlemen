@@ -39,7 +39,7 @@ public class WishListService {
                 .toList();
     }
 
-    public List<WishListDTO> getGuestWishLists(UUID guestId) {
+    public List<WishListDTO> getGuestWishLists(Long guestId) {
         Optional<User> guest = userRepository.findById(guestId);
         if (guest.isPresent()) {
             User currentGuest = guest.get();
@@ -51,12 +51,12 @@ public class WishListService {
         return null;
     }
 
-    public Optional<WishListDTO> getWishListById(UUID id) {
+    public Optional<WishListDTO> getWishListById(Long id) {
         Optional<WishList> wl = wishListRepository.findById(id);
         return wl.map(wishListMapper::toWishListDTO);
     }
 
-    public Optional<WishListDTO> createWishList(UUID userId, WishListDTO wishListDTO) {
+    public Optional<WishListDTO> createWishList(Long userId, WishListDTO wishListDTO) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             User currentUser = user.get();
@@ -71,7 +71,7 @@ public class WishListService {
         return Optional.empty();
     }
 
-    public Optional<WishListDTO> addGuestToWishList(UUID wishListId, UUID guestId) {
+    public Optional<WishListDTO> addGuestToWishList(Long wishListId, Long guestId) {
         Optional<User> guest = userRepository.findById(guestId);
         Optional<WishList> wl = wishListRepository.findById(wishListId);
         if (guest.isPresent() && wl.isPresent()) {
@@ -80,13 +80,11 @@ public class WishListService {
             currentWl.getGuests().add(currentGuest);
             wishListRepository.save(currentWl);
             return Optional.of(wishListMapper.toWishListDTO(currentWl));
-
-
         }
         return Optional.empty();
     }
 
-        public Optional<WishListDTO> addGiftToWishList (UUID wishListId, UUID ownerId, UUID giftId){
+        public Optional<WishListDTO> addGiftToWishList (Long wishListId, Long ownerId, Long giftId){
             Optional<WishList> wl = wishListRepository.findById(wishListId);
             Optional<User> owner = userRepository.findById(ownerId);
             Optional<Gift> gift = giftRepository.findById(giftId);
@@ -100,12 +98,13 @@ public class WishListService {
                     wishListRepository.save(currentWl);
                     return Optional.of(wishListMapper.toWishListDTO(currentWl));
                 }
+                return Optional.empty();
 
             }
             return Optional.empty();
         }
 
-        public Optional<WishListDTO> removeGiftToWishList (UUID wishListId, UUID ownerId, UUID giftId){
+        public Optional<WishListDTO> removeGiftToWishList (Long wishListId, Long ownerId, Long giftId){
             Optional<WishList> wl = wishListRepository.findById(wishListId);
             Optional<User> owner = userRepository.findById(ownerId);
             Optional<Gift> gift = giftRepository.findById(giftId);
