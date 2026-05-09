@@ -23,8 +23,8 @@ public class GiftController {
     }
 
     @GetMapping()
-    public List<GiftDTO> getAllGifts() {
-        return giftService.getAllGifts();
+    public ResponseEntity<List<GiftDTO>> getAllGifts() {
+        return ResponseEntity.ok(giftService.getAllGifts());
     }
 
     @GetMapping("/{id}")

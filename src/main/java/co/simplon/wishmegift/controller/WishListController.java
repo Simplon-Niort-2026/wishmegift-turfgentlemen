@@ -23,18 +23,19 @@ public class WishListController {
     }
 
     @GetMapping
-    public List<WishListDTO> getWishList() {
-        return wishListService.getWishLists();
+    public ResponseEntity<List<WishListDTO>> getWishList() {
+        return ResponseEntity.ok(wishListService.getWishLists());
     }
 
     @GetMapping("/guest/{guestId}")
-    public List<WishListDTO> getGuestWishLists(@PathVariable UUID guestId){
-        return wishListService.getGuestWishLists(guestId);
+    public ResponseEntity<List<WishListDTO>> getGuestWishLists(@PathVariable UUID guestId){
+        return ResponseEntity.ok(wishListService.getGuestWishLists(guestId));
     }
 
     @GetMapping("/{id}")
-    public Optional<WishListDTO> getWishListById(@PathVariable UUID id) {
-        return wishListService.getWishListById(id);
+    public ResponseEntity<WishListDTO> getWishListById(@PathVariable UUID id) {
+        Optional<WishListDTO> wishListDTOOptional = wishListService.getWishListById(id);
+        return wishListDTOOptional.map(wishListDTO -> new ResponseEntity<>(wishListDTO, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/{ownerId}")
@@ -43,7 +44,7 @@ public class WishListController {
         return wishListDTOOptional.map(wishList -> new ResponseEntity<>(wishList, HttpStatus.CREATED)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @PatchMapping("/{wishListId}/share/{guestId}")
+    @PatchMapping("/share/{wishListId}/{guestId}")
     public ResponseEntity<WishListDTO> addGuestToWishList(@PathVariable UUID wishListId, @PathVariable UUID guestId) {
         Optional<WishListDTO> wishListDTOOptional = wishListService.addGuestToWishList(wishListId, guestId);
         return wishListDTOOptional.map(wishlist -> new ResponseEntity<>(wishlist, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
