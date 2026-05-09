@@ -1,8 +1,10 @@
 package co.simplon.wishmegift.service;
 
+import co.simplon.wishmegift.dto.WishListDTO;
 import co.simplon.wishmegift.entity.Gift;
 import co.simplon.wishmegift.entity.User;
 import co.simplon.wishmegift.entity.WishList;
+import co.simplon.wishmegift.mapper.WishListMapper;
 import co.simplon.wishmegift.repository.GiftRepository;
 import co.simplon.wishmegift.repository.UserRepository;
 import co.simplon.wishmegift.repository.WishListRepository;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -20,62 +23,70 @@ public class WishListService {
     private final WishListRepository wishListRepository;
     private final UserRepository userRepository;
     private final GiftRepository giftRepository;
+    private final WishListMapper wishListMapper;
 
-    public WishListService(WishListRepository wishListRepository, UserRepository userRepository, GiftRepository giftRepository) {
+    public WishListService(GiftRepository giftRepository, WishListRepository wishListRepository, UserRepository userRepository, WishListMapper wishListMapper) {
+        this.giftRepository = giftRepository;
         this.wishListRepository = wishListRepository;
         this.userRepository = userRepository;
-        this.giftRepository = giftRepository;
+        this.wishListMapper = wishListMapper;
     }
 
-    public Iterable<WishList> getWishLists() {
-        return wishListRepository.findAll();
+    public List<WishListDTO> getWishLists() {
+        return wishListRepository.findAll()
+                .stream()
+                .map(wishListMapper::toWishListDTO)
+                .toList();
     }
 
-    public Iterable<WishList> getGuestWishLists(UUID guestId) {
+    public List<WishListDTO> getGuestWishLists(UUID guestId) {
         Optional<User> guest = userRepository.findById(guestId);
         if (guest.isPresent()) {
             User currentGuest = guest.get();
-            return currentGuest.getGuestLists();
+            return currentGuest.getGuestLists()
+                    .stream()
+                    .map(wishListMapper::toWishListDTO)
+                    .toList();
         }
         return null;
     }
 
-    public Optional<WishList> getWishListById(UUID id) {
-        return wishListRepository.findById(id);
+    public Optional<WishListDTO> getWishListById(UUID id) {
+        Optional<WishList> wl = wishListRepository.findById(id);
+        return wl.map(wishListMapper::toWishListDTO);
     }
 
-    public ResponseEntity<WishList> createWishList(UUID userId, WishList wishList) {
+    public Optional<WishListDTO> createWishList(UUID userId, WishListDTO wishListDTO) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             User currentUser = user.get();
+            WishList currentWl = wishListMapper.toWishList(wishListDTO);
 
-            wishList.setOwner(currentUser);
-            Set<WishList> wl = currentUser.getLists();
-            wl.add(wishList);
+            currentWl.setOwner(currentUser);
 
-            wishListRepository.save(wishList);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            wishListRepository.save(currentWl);
+            return Optional.of(wishListMapper.toWishListDTO(currentWl));
+
         }
-
+        return Optional.empty();
     }
 
-    public ResponseEntity<WishList> addGuestToWishList(UUID wishListId, UUID guestId) {
+    public Optional<WishListDTO> addGuestToWishList(UUID wishListId, UUID guestId) {
         Optional<User> guest = userRepository.findById(guestId);
         Optional<WishList> wl = wishListRepository.findById(wishListId);
         if (guest.isPresent() && wl.isPresent()) {
-            WishList currentWishList = wl.get();
+            WishList currentWl = wl.get();
             User currentGuest = guest.get();
-            currentWishList.getGuests().add(currentGuest);
-            wishListRepository.save(currentWishList);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+            currentWl.getGuests().add(currentGuest);
+            wishListRepository.save(currentWl);
+            return Optional.of(wishListMapper.toWishListDTO(currentWl));
+
 
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return Optional.empty();
     }
 
-        public ResponseEntity<WishList> addGiftToWishList (UUID wishListId, UUID ownerId, UUID giftId){
+        public Optional<WishListDTO> addGiftToWishList (UUID wishListId, UUID ownerId, UUID giftId){
             Optional<WishList> wl = wishListRepository.findById(wishListId);
             Optional<User> owner = userRepository.findById(ownerId);
             Optional<Gift> gift = giftRepository.findById(giftId);
@@ -83,18 +94,18 @@ public class WishListService {
                 User currentOwner = owner.get();
                 WishList currentWl = wl.get();
                 Gift currentGift = gift.get();
-                if (currentWl.getOwner() == currentOwner) {
+                if (currentWl.getOwner().equals(currentOwner)) {
                     currentWl.getGifts().add(currentGift);
 
                     wishListRepository.save(currentWl);
-                    return new ResponseEntity<>(currentWl, HttpStatus.ACCEPTED);
+                    return Optional.of(wishListMapper.toWishListDTO(currentWl));
                 }
 
             }
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return Optional.empty();
         }
 
-        public ResponseEntity<WishList> removeGiftToWishList (UUID wishListId, UUID ownerId, UUID giftId){
+        public Optional<WishListDTO> removeGiftToWishList (UUID wishListId, UUID ownerId, UUID giftId){
             Optional<WishList> wl = wishListRepository.findById(wishListId);
             Optional<User> owner = userRepository.findById(ownerId);
             Optional<Gift> gift = giftRepository.findById(giftId);
@@ -102,14 +113,15 @@ public class WishListService {
                 User currentOwner = owner.get();
                 WishList currentWl = wl.get();
                 Gift currentGift = gift.get();
-                if (currentWl.getOwner() == currentOwner) {
+                if (currentWl.getOwner().equals(currentOwner)) {
                     currentWl.getGifts().remove(currentGift);
                     giftRepository.delete(currentGift);
+
                     wishListRepository.save(currentWl);
-                    return new ResponseEntity<>(currentWl, HttpStatus.ACCEPTED);
+                    return Optional.of(wishListMapper.toWishListDTO(currentWl));
                 }
             }
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return Optional.empty();
         }
 
     }
