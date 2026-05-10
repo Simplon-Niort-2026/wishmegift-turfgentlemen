@@ -106,11 +106,11 @@ public class Gift {
         this.isReserved = !this.isReserved;
     }
 
-    public WishList getWishList() {
+    public WishList getList() {
         return wishList;
     }
 
-    public void setWishList(WishList wishList) {
+    public void setList(WishList wishList) {
         this.wishList = wishList;
     }
 

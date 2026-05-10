@@ -1,10 +1,8 @@
 package co.simplon.wishmegift.service;
 
-import co.simplon.wishmegift.dto.GiftDTO;
 import co.simplon.wishmegift.entity.Gift;
 import co.simplon.wishmegift.entity.User;
 import co.simplon.wishmegift.entity.WishList;
-import co.simplon.wishmegift.mapper.GiftMapper;
 import co.simplon.wishmegift.repository.GiftRepository;
 import co.simplon.wishmegift.repository.UserRepository;
 import co.simplon.wishmegift.repository.WishListRepository;
@@ -12,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,34 +19,26 @@ public class GiftService {
     private final GiftRepository giftRepository;
     private final WishListRepository wishListRepository;
     private final UserRepository userRepository;
-    private final GiftMapper giftMapper;
 
-    public GiftService(GiftRepository giftRepository, WishListRepository wishListRepository, UserRepository userRepository,  GiftMapper giftMapper) {
+    public GiftService(GiftRepository giftRepository, WishListRepository wishListRepository, UserRepository userRepository) {
         this.giftRepository = giftRepository;
         this.wishListRepository = wishListRepository;
         this.userRepository = userRepository;
-        this.giftMapper = giftMapper;
     }
 
-    public List<GiftDTO> getAllGifts() {
-        return giftRepository.findAll()
-                .stream()
-                .map(giftMapper::toGiftDTO)
-                .toList();
+    public Iterable<Gift> getAllGifts() {
+        return giftRepository.findAll();
     }
 
-    public Optional<GiftDTO> getGiftById(UUID id) {
-        Optional<Gift> gift = giftRepository.findById(id);
-        return gift.map(giftMapper::toGiftDTO);
+    public Optional<Gift> getGiftById(UUID id) {
+        return giftRepository.findById(id);
     }
 
-    public GiftDTO createGift(GiftDTO giftDTO) {
-        Gift gift = giftMapper.toGift(giftDTO);
-        giftRepository.save(gift);
-        return giftMapper.toGiftDTO(gift);
+    public Gift saveGift(Gift gift) {
+        return giftRepository.save(gift);
     }
 
-    public Optional<GiftDTO> reserveGift(UUID giftId, UUID wishlistId, UUID guestId) {
+    public ResponseEntity<Gift> reserveGift(UUID giftId, UUID wishlistId, UUID guestId) {
         Optional<Gift> gift = giftRepository.findById(giftId);
         Optional<WishList> wl = wishListRepository.findById(wishlistId);
         Optional<User> guest = userRepository.findById(guestId);
@@ -57,15 +46,15 @@ public class GiftService {
             Gift currentGift = gift.get();
             WishList currentWl = wl.get();
             User currentGuest = guest.get();
-            if (!currentWl.getOwner().equals(currentGuest) && currentWl.getGuests().contains(currentGuest)) {
+            if (currentWl.getOwner() != currentGuest && currentWl.getGuests().contains(currentGuest)) {
                 currentGift.setReserved(currentGift.getReserved());
 
-                giftRepository.save(currentGift);
-                return Optional.of(giftMapper.toGiftDTO(currentGift));
+                saveGift(currentGift);
+                return new ResponseEntity<>(currentGift, HttpStatus.ACCEPTED);
             }
         }
 
-        return Optional.empty();
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
     }
 
