@@ -1,16 +1,11 @@
 package co.simplon.wishmegift.controller;
 
-import co.simplon.wishmegift.dto.UserCreateDTO;
-import co.simplon.wishmegift.dto.UserResponseDTO;
 import co.simplon.wishmegift.entity.User;
-import co.simplon.wishmegift.mapper.UserMapper;
 import co.simplon.wishmegift.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,26 +20,23 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public Iterable<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable UUID id) {
-        Optional<UserResponseDTO> userResponseDTO = userService.getUserById(id);
-        return userResponseDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public Optional<User> getUserById(@PathVariable UUID id) {
+        return userService.getUserById(id);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> userRegister(@Valid @RequestBody UserCreateDTO userCreateDTO) {
-        Optional<UserResponseDTO> userResponseDTO = userService.createUser(userCreateDTO);
-        return userResponseDTO.map(responseDTO -> new ResponseEntity<>(responseDTO, HttpStatus.CREATED)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    public ResponseEntity<User> userRegister(@Valid @RequestBody User user) {
+        return userService.saveUser(user);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> updateUserById(@PathVariable UUID id, @RequestBody UserCreateDTO userCreateDTO) {
-        Optional<UserResponseDTO> userResponseDTO = userService.updateUser(id, userCreateDTO);
-        return userResponseDTO.map(ResponseDTO -> new ResponseEntity<>(ResponseDTO, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    public ResponseEntity<User> updateUserById(@PathVariable UUID id, @RequestBody User user) {
+        return userService.updateUser(id, user);
     }
 
     @DeleteMapping("/{id}")
